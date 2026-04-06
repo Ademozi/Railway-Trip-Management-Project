@@ -10,13 +10,12 @@
     <html>
         <head>
             <title>Train Trips Report</title>
+            <link rel="stylesheet" type="text/css" href="style.css"/>
         </head>
         <body>
             <h1>Train Trips Report</h1>
 
             <xsl:for-each select="lines/line">
-                <hr/>
-                <hr/>
                 <h2>
                     Line: <xsl:value-of select="@code"/> 
                     ( 
@@ -25,7 +24,6 @@
                     <xsl:value-of select="$stations[@id = current()/@arrival]/@name"/> 
                     )
                 </h2>
-                <hr/>
 
                 <h3>
                     Detailed List of Trips:
@@ -40,7 +38,7 @@
                     </p>
 
                     
-                        <table border="1">
+                        <table>
                             <tr>
                                 <th>schedule</th>
                                 <th>Train Type</th>
@@ -52,7 +50,19 @@
                                 <tr>
                                     <td><xsl:value-of select="../schedule/@departure"/> - <xsl:value-of select="../schedule/@arrival"/></td>
                                     <td><xsl:value-of select="../@type"/></td>
-                                    <td><xsl:value-of select="@type"/></td>
+                                    <td>
+                                        <xsl:choose>
+                                            <xsl:when test="@type='VIP'">
+                                                <span class="vip-text">
+                                                    <xsl:value-of select="@type"/>
+                                                </span>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:value-of select="@type"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                        
+                                    </td>
                                     <td><xsl:value-of select="@price"/></td>
                                 </tr>
                             </xsl:for-each>
