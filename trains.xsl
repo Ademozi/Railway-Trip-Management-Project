@@ -2,6 +2,11 @@
 
 <xsl:template match="/transport">
 
+    <xsl:variable name="stations" select="stations/station"/>
+
+    <xsl:variable name="lines" select="lines/line"/>
+
+
     <html>
         <head>
             <title>Train Trips Report</title>
@@ -13,7 +18,12 @@
                 <hr/>
                 <hr/>
                 <h2>
-                    Line: <xsl:value-of select="@code"/> ( <xsl:value-of select="@departure"/> - <xsl:value-of select="@arrival"/> )
+                    Line: <xsl:value-of select="@code"/> 
+                    ( 
+                    <xsl:value-of select="$stations[@id = current()/@departure]/@name"/>
+                     - 
+                    <xsl:value-of select="$stations[@id = current()/@arrival]/@name"/> 
+                    )
                 </h2>
                 <hr/>
 
@@ -23,7 +33,10 @@
 
                 <xsl:for-each select = "trips/trip">
                     <p>
-                        Trip No. <xsl:value-of select="@code"/>: departure: | Arrival: 
+                        Trip No. <xsl:value-of select="@code"/>: 
+                        departure: <xsl:value-of select="$stations[@id = $lines/@departure]/@name"/>
+                        | 
+                        Arrival: <xsl:value-of select="$stations[@id = $lines/@arrival]/@name"/>
                     </p>
 
                     
