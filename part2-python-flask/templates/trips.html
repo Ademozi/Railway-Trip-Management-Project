@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}All Trips – Railway{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom:20px; color:#1a365d;">🗂️ All Trips &nbsp;<span style="font-size:.85rem; color:#718096; font-weight:400;">— Filter using the options below</span></h2>
+
+<!-- Filter Form -->
+<form class="filter-form" method="GET" action="/trips">
+  <div>
+    <label>Departure City</label>
+    <select name="departure">
+      <option value="">All</option>
+      {% for c in cities %}
+        <option value="{{ c }}" {{ 'selected' if departure == c }}>{{ c }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div>
+    <label>Arrival City</label>
+    <select name="arrival">
+      <option value="">All</option>
+      {% for c in cities %}
+        <option value="{{ c }}" {{ 'selected' if arrival == c }}>{{ c }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div>
+    <label>Train Type</label>
+    <select name="train_type">
+      <option value="">All</option>
+      {% for t in train_types %}
+        <option value="{{ t }}" {{ 'selected' if train_type == t }}>{{ t }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div>
+    <label>Max Price (DA)</label>
+    <input type="number" name="max_price" placeholder="e.g. 2000" value="{{ max_price }}" min="0"/>
+  </div>
+  <button type="submit" class="btn btn-primary">Apply Filters</button>
+  <a href="/trips" class="btn btn-secondary">Reset</a>
+</form>
+
+<!-- Results -->
+{% if trips %}
+  <div class="alert alert-info">
+    Showing <strong>{{ trips|length }}</strong> trip(s) matching your criteria.
+  </div>
+
+  {% for trip in trips %}
+  <div class="card">
+    <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
+      <h2>
+        Trip <strong>{{ trip.code }}</strong> &nbsp;—&nbsp;
+        {{ trip.dep_city }} <span style="color:#e53e3e;">→</span> {{ trip.arr_city }}
+      </h2>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <span class="badge badge-blue">Line {{ trip.line_code }}</span>
+        <span class="badge badge-green">{{ trip.type }}</span>
+        <span class="badge badge-gray">📅 {{ trip.days }}</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <p style="margin-bottom:12px; font-size:.88rem;">
+        <strong>⏰ Schedule:</strong> {{ trip.dep_time }} → {{ trip.arr_time }}
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Schedule</th><th>Train Type</th><th>Class</th><th>Price (DA)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for cls in trip.classes %}
+          <tr class="{{ 'vip' if cls.type == 'VIP' }}">
+            <td>{{ trip.dep_time }} – {{ trip.arr_time }}</td>
+            <td>{{ trip.type }}</td>
+            <td>
+              {% if cls.type == 'VIP' %}
+                <span class="badge badge-purple">VIP</span>
+              {% else %}
+                {{ cls.type }}
+              {% endif %}
+            </td>
+            <td><strong>{{ cls.price }}</strong></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endfor %}
+
+{% else %}
+  <div class="alert alert-danger">No trips found matching your filters.</div>
+{% endif %}
+<p>
+  TP_Do not copy directly / This page is implemented by the student:
+  Teffah Adem Lahlou / Group: 04
+  Hamadach Chamseddin / Group: 04
+  Bensalah Dhiae ddine / Group: 04
+</p>
+{% endblock %}

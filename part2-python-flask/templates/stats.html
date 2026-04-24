@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Statistics – Railway{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom:20px; color:#1a365d;">📊 Statistics &nbsp;<span style="font-size:.85rem; color:#718096; font-weight:400;">— Uses XML ElementTree</span></h2>
+
+<!-- Summary stats -->
+{% set total_lines = line_stats|length %}
+{% set total_trips = line_stats|sum(attribute='trip_count') %}
+<div class="stat-grid">
+  <div class="stat-box">
+    <div class="stat-value">{{ total_lines }}</div>
+    <div class="stat-label">Total Lines</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-value">{{ total_trips }}</div>
+    <div class="stat-label">Total Trips</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-value">{{ type_counts|length }}</div>
+    <div class="stat-label">Train Types</div>
+  </div>
+</div>
+
+<!-- Trips count per Train Type -->
+<div class="card" style="margin-bottom:28px;">
+  <div class="card-header"><h2>🚂 Number of Trips per Train Type</h2></div>
+  <div class="card-body">
+    <table>
+      <thead><tr><th>Train Type</th><th>Number of Trips</th></tr></thead>
+      <tbody>
+        {% for ttype, count in type_counts.items()|sort %}
+        <tr>
+          <td>
+            {% if ttype == 'Rapid' %}   <span class="badge badge-blue">{{ ttype }}</span>
+            {% elif ttype == 'Express' %}<span class="badge badge-red">{{ ttype }}</span>
+            {% elif ttype == 'Coradia' %}<span class="badge badge-purple">{{ ttype }}</span>
+            {% else %}                   <span class="badge badge-gray">{{ ttype }}</span>
+            {% endif %}
+          </td>
+          <td><strong>{{ count }}</strong></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Cheapest / Most Expensive per Line -->
+<div class="card">
+  <div class="card-header"><h2>💰 Cheapest &amp; Most Expensive Trip per Line</h2></div>
+  <div class="card-body">
+    <table>
+      <thead>
+        <tr>
+          <th>Line</th>
+          <th>Route</th>
+          <th>Trips</th>
+          <th>Cheapest Trip</th>
+          <th>Price (DA)</th>
+          <th>Most Expensive Trip</th>
+          <th>Price (DA)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ls in line_stats %}
+        <tr>
+          <td><span class="badge badge-blue">{{ ls.line_code }}</span></td>
+          <td>{{ ls.dep_city }} → {{ ls.arr_city }}</td>
+          <td>{{ ls.trip_count }}</td>
+
+          {% if ls.cheapest %}
+            <td>
+              <strong>{{ ls.cheapest.trip_code }}</strong>
+              <br/><small style="color:#718096;">{{ ls.cheapest.class_type }} – {{ ls.cheapest.trip_type }}</small>
+            </td>
+            <td><span class="badge badge-green">{{ ls.cheapest.price }} DA</span></td>
+          {% else %}
+            <td colspan="2" style="color:#a0aec0;">—</td>
+          {% endif %}
+
+          {% if ls.expensive %}
+            <td>
+              <strong>{{ ls.expensive.trip_code }}</strong>
+              <br/><small style="color:#718096;">{{ ls.expensive.class_type }} – {{ ls.expensive.trip_type }}</small>
+            </td>
+            <td><span class="badge badge-red">{{ ls.expensive.price }} DA</span></td>
+          {% else %}
+            <td colspan="2" style="color:#a0aec0;">—</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="alert alert-info" style="margin-top:18px; font-size:.82rem;">
+      ℹ️ All statistics computed using <strong>XML ElementTree</strong> parser from Python's standard library.
+    </div>
+  </div>
+</div>
+<p>
+  TP_Do not copy directly / This page is implemented by the student:
+  Teffah Adem Lahlou / Group: 04
+  Hamadach Chamseddin / Group: 04
+  Bensalah Dhiae ddine / Group: 04
+</p>
+{% endblock %}

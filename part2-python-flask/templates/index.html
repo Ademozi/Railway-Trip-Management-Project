@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Home – Railway Trip Management{% endblock %}
+
+{% block content %}
+<div style="text-align:center; padding: 50px 20px 40px;">
+  <div style="font-size:4rem; margin-bottom:16px;">🚆</div>
+  <h1 style="font-size:2.2rem; color:#1a365d; margin-bottom:10px;">Railway Trip Management</h1>
+  <p style="color:#718096; font-size:1rem; max-width:520px; margin:0 auto 36px;">
+    UMBB – L3 DSS Project &nbsp;|&nbsp; XML manipulation with XSLT, DOM &amp; ElementTree
+  </p>
+
+  <div style="display:flex; flex-wrap:wrap; gap:18px; justify-content:center; max-width:800px; margin:0 auto;">
+
+    <a href="/trips" style="text-decoration:none;">
+      <div class="card" style="width:200px; padding:28px 20px; text-align:center; cursor:pointer;">
+        <div style="font-size:2.5rem; margin-bottom:12px;">🗂️</div>
+        <h3 style="color:#2b6cb0; margin-bottom:6px;">All Trips</h3>
+        <p style="font-size:.82rem; color:#718096;">Browse &amp; filter trips by city, type or price</p>
+      </div>
+    </a>
+
+    <a href="/search" style="text-decoration:none;">
+      <div class="card" style="width:200px; padding:28px 20px; text-align:center; cursor:pointer;">
+        <div style="font-size:2.5rem; margin-bottom:12px;">🔍</div>
+        <h3 style="color:#2b6cb0; margin-bottom:6px;">Search by Code</h3>
+        <p style="font-size:.82rem; color:#718096;">Find a specific trip using its code (DOM)</p>
+      </div>
+    </a>
+
+    <a href="/stats" style="text-decoration:none;">
+      <div class="card" style="width:200px; padding:28px 20px; text-align:center; cursor:pointer;">
+        <div style="font-size:2.5rem; margin-bottom:12px;">📊</div>
+        <h3 style="color:#2b6cb0; margin-bottom:6px;">Statistics</h3>
+        <p style="font-size:.82rem; color:#718096;">Prices &amp; counts per line/type (ElementTree)</p>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header"><h2>📋 Project Overview</h2></div>
+  <div class="card-body">
+    <table>
+      <thead><tr><th>Component</th><th>Technology</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Part 1</strong></td><td><span class="badge badge-blue">XSLT</span></td><td>transforms transport.xml → structured HTML page (trains.xsl)</td></tr>
+        <tr><td><strong>Part 2 – Search</strong></td><td><span class="badge badge-green">DOM (minidom)</span></td><td>Fetch complete trip details by code</td></tr>
+        <tr><td><strong>Part 2 – Filter</strong></td><td><span class="badge badge-purple">ElementTree</span></td><td>Filter trips by city, type, max price</td></tr>
+        <tr><td><strong>Part 2 – Stats</strong></td><td><span class="badge badge-purple">ElementTree</span></td><td>Cheapest/expensive trip per line; counts per type</td></tr>
+        <tr><td><strong>Web App</strong></td><td><span class="badge badge-red">Flask</span></td><td>Python web framework exposing all features</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<p>
+  TP_Do not copy directly / This page is implemented by the student:
+  Teffah Adem Lahlou / Group: 04
+  Hamadach Chamseddin / Group: 04
+  Bensalah Dhiae ddine / Group: 04
+</p>
+{% endblock %}

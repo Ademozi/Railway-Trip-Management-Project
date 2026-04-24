@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}Search Trip – Railway{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom:20px; color:#1a365d;">🔍 Search Trip by Code &nbsp;<span style="font-size:.85rem; color:#718096; font-weight:400;">— Uses XML DOM (minidom)</span></h2>
+
+<form class="filter-form" method="GET" action="/search">
+  <div>
+    <label>Trip Code</label>
+    <input type="text" name="code" placeholder="e.g. T101, T502, T1201"
+           value="{{ code }}" style="min-width:220px; text-transform:uppercase;"/>
+  </div>
+  <button type="submit" class="btn btn-primary">🔍 Search</button>
+  <a href="/search" class="btn btn-secondary">Clear</a>
+</form>
+
+{% if error %}
+  <div class="alert alert-danger">{{ error }}</div>
+{% endif %}
+
+{% if result %}
+<div class="card">
+  <div class="card-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+    <h2>
+      Trip <strong>{{ result.code }}</strong> &nbsp;—&nbsp;
+      {{ result.dep_city }} <span style="color:#e53e3e;">→</span> {{ result.arr_city }}
+    </h2>
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+      <span class="badge badge-blue">Line {{ result.line_code }}</span>
+      <span class="badge badge-green">{{ result.type }}</span>
+    </div>
+  </div>
+  <div class="card-body">
+
+    <div class="detail-grid" style="margin-bottom:20px;">
+      <div class="detail-item">
+        <label>Trip Code</label>
+        <p>{{ result.code }}</p>
+      </div>
+      <div class="detail-item">
+        <label>Line</label>
+        <p>{{ result.line_code }}</p>
+      </div>
+      <div class="detail-item">
+        <label>Departure City</label>
+        <p>{{ result.dep_city }}</p>
+      </div>
+      <div class="detail-item">
+        <label>Arrival City</label>
+        <p>{{ result.arr_city }}</p>
+      </div>
+      <div class="detail-item">
+        <label>Schedule</label>
+        <p>{{ result.dep_time }} → {{ result.arr_time }}</p>
+      </div>
+      <div class="detail-item">
+        <label>Train Type</label>
+        <p>{{ result.type }}</p>
+      </div>
+      <div class="detail-item" style="grid-column:1/-1;">
+        <label>Operating Days</label>
+        <p>
+          {% for day in result.days.split(',') %}
+            <span class="badge badge-gray" style="margin-right:4px;">{{ day.strip() }}</span>
+          {% endfor %}
+        </p>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom:12px; color:#2c5282; font-size:.95rem;">🎫 Available Classes &amp; Prices</h3>
+    <table>
+      <thead>
+        <tr><th>Schedule</th><th>Train Type</th><th>Class</th><th>Price (DA)</th></tr>
+      </thead>
+      <tbody>
+        {% for cls in result.classes %}
+        <tr class="{{ 'vip' if cls.type == 'VIP' }}">
+          <td>{{ result.dep_time }} – {{ result.arr_time }}</td>
+          <td>{{ result.type }}</td>
+          <td>
+            {% if cls.type == 'VIP' %}
+              <span class="badge badge-purple">VIP</span>
+            {% else %}
+              {{ cls.type }}
+            {% endif %}
+          </td>
+          <td><strong>{{ cls.price }} DA</strong></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="alert alert-info" style="margin-top:18px; font-size:.82rem;">
+      ℹ️ This information was retrieved using <strong>XML DOM (minidom)</strong> parser.
+    </div>
+  </div>
+</div>
+
+{% elif not error and not code %}
+<div class="alert alert-info">
+  Enter a trip code above to search. Available codes: T101, T102, T103, T201 ... T1201
+</div>
+{% endif %}
+<p>
+  TP_Do not copy directly / This page is implemented by the student:
+  Teffah Adem Lahlou / Group: 04
+  Hamadach Chamseddin / Group: 04
+  Bensalah Dhiae ddine / Group: 04
+</p>
+{% endblock %}
