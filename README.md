@@ -140,13 +140,9 @@ The XML file describes the Algerian rail network:
 
 | Name | Group |
 |---|---|
-| *Student 1* | *Group X* |
-| *Student 2* | *Group X* |
-| *Student 3* | *Group X* |
+| Teffah Adem lahlou | Group 04 |
+| Hamadache Chemseddine | Group 04 |
+| Bensalah Dhiae ddine | Group 04 |
 
 ---
 
-## ⚠️ Academic Notice
-
-This project was submitted as part of the L3 DSS module at UMBB (2025/2026).
-Any identical or copied submission is considered plagiarism and results in a grade of **0** on the second test, per the course instructions.
